@@ -1,7 +1,9 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: Enyell07/ensenando-aprendiendo
   branch: main
 
+locale: "es"
 media_folder: "public/images/uploads"
 public_folder: "/images/uploads"
 
@@ -13,16 +15,12 @@ collections:
     slug: "{{slug}}"
     fields:
       - { label: "Título", name: "titulo", widget: "string" }
-      - label: "Tipo"
-        name: "tipo"
-        widget: "select"
-        options: ["PDF", "Enlace", "Actividad", "Lectura"]
-      - label: "Público"
-        name: "publico"
-        widget: "select"
-        options: ["Estudiantes", "Docentes", "General"]
+      - { label: "Tipo", name: "tipo", widget: "select", options: ["PDF", "Enlace", "Actividad", "Lectura"] }
+      - { label: "Público", name: "publico", widget: "select", options: ["Estudiantes", "Docentes", "General"] }
       - { label: "Descripción", name: "descripcion", widget: "text" }
-      - { label: "Contenido", name: "body", widget: "markdown" }
+      - { label: "Enlace (opcional)", name: "enlace", widget: "string", required: false }
+      - { label: "Archivo PDF o documento (opcional)", name: "archivo", widget: "file", required: false }
+      - { label: "Contenido", name: "body", widget: "markdown", required: false }
 
   - name: "aula"
     label: "Aula"
@@ -54,8 +52,15 @@ collections:
     label: "Información extra de episodios"
     folder: "src/content/episodios_extra"
     create: true
+    identifier_field: "slug_episodio"
     slug: "{{slug}}"
     fields:
-      - { label: "Slug del episodio (debe coincidir con el título en YouTube)", name: "slug_episodio", widget: "string" }
-      - { label: "Transcripción", name: "transcripcion", widget: "markdown", required: false }
-      - { label: "Recursos relacionados", name: "recursos", widget: "list", required: false }
+      - { label: "Dirección del episodio (lo que va después de /podcast/ en su enlace)", name: "slug_episodio", widget: "string" }
+      - { label: "Transcripción", name: "transcripcion", widget: "text", required: false }
+      - label: "Recursos del episodio (el primero es el recurso de la semana)"
+        name: "recursos"
+        widget: "list"
+        required: false
+        fields:
+          - { label: "Título", name: "titulo", widget: "string" }
+          - { label: "Enlace o archivo", name: "enlace", widget: "file" }

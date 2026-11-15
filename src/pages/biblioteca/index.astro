@@ -17,6 +17,9 @@ const recursos = await getCollection('biblioteca');
           <span class="demo-tag" style="margin:0;">{r.data.tipo} · {r.data.publico}</span>
           <h3>{r.data.titulo}</h3>
           <p>{r.data.descripcion}</p>
+          {(r.data.enlace || r.data.archivo) && (
+            <a class="btn btn-ghost" style="margin-top:14px; padding:10px 20px; font-size:14px;" href={r.data.enlace || r.data.archivo} target="_blank" rel="noopener">Abrir recurso</a>
+          )}
         </div>
       ))}
     </div>

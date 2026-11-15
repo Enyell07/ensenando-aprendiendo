@@ -2,7 +2,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
-const articulos = (await getCollection('aula')).sort((a, b) => b.data.fecha - a.data.fecha);
+const articulos = (await getCollection('aula')).sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf());
+const fmt = (d) => d.toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
 <BaseLayout title="Aula — Enseñando aprendiendo" description="Reflexiones y experiencias educativas de la comunidad.">
   <div class="page-head">
@@ -13,10 +14,10 @@ const articulos = (await getCollection('aula')).sort((a, b) => b.data.fecha - a.
   <div class="page-body">
     <div class="list">
       {articulos.map((a) => (
-        <div class="item">
-          <p class="ep-date">{a.data.categoria} · {a.data.autor}</p>
+        <a class="item" href={`/aula/${a.slug}`} style="display:block; text-decoration:none;">
+          <p class="ep-date">{a.data.categoria} · {a.data.autor} · {fmt(a.data.fecha)}</p>
           <h3>{a.data.titulo}</h3>
-        </div>
+        </a>
       ))}
     </div>
   </div>

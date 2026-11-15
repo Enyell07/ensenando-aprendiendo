@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getEpisodes } from '../../lib/youtube.js';
+import { getCollection } from 'astro:content';
 
 // getStaticPaths le dice a Astro qué páginas de episodio generar: una por cada video de la playlist.
 export async function getStaticPaths() {
@@ -12,6 +13,11 @@ const { episodio } = Astro.props;
 const fecha = new Date(episodio.publishedAt).toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' });
 const url = new URL(Astro.url.pathname, Astro.site).href;
 const textoCompartir = encodeURIComponent(`${episodio.title} — Enseñando aprendiendo ${url}`);
+
+// Información extra cargada desde /admin (transcripción y recursos)
+const extra = (await getCollection('episodios_extra')).find((e) => e.data.slug_episodio === episodio.slug);
+const recursos = extra?.data.recursos ?? [];
+const transcripcion = extra?.data.transcripcion ?? '';
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -45,6 +51,22 @@ const jsonLd = {
     </div>
 
     <p class="desc">{episodio.description}</p>
+
+    {recursos.length > 0 && (
+      <section class="extra">
+        <h2>Recursos del episodio</h2>
+        <ul>
+          {recursos.map((r) => <li><a href={r.enlace} target="_blank" rel="noopener">{r.titulo}</a></li>)}
+        </ul>
+      </section>
+    )}
+
+    {transcripcion && (
+      <details class="extra">
+        <summary>Ver transcripción</summary>
+        <p class="desc">{transcripcion}</p>
+      </details>
+    )}
   </article>
   <script is:inline>
     (function () {

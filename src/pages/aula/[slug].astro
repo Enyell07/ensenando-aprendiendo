@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const articulos = await getCollection('aula');
+  return articulos.map((a) => ({ params: { slug: a.slug }, props: { articulo: a } }));
+}
+
+const { articulo } = Astro.props;
+const { Content } = await articulo.render();
+const fecha = articulo.data.fecha.toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<BaseLayout title={`${articulo.data.titulo} — Aula`} description={articulo.data.titulo}>
+  <article class="ep-article">
+    <p class="crumb"><a href="/">Inicio</a> / <a href="/aula">Aula</a> / Artículo</p>
+    <h1>{articulo.data.titulo}</h1>
+    <p class="meta">{articulo.data.categoria} · {articulo.data.autor} · {fecha}</p>
+    {articulo.data.imagen && <img class="cover" src={articulo.data.imagen} alt={articulo.data.titulo} />}
+    <div class="prose"><Content /></div>
+  </article>
+</BaseLayout>

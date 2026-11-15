@@ -3,12 +3,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import EpisodeCard from '../components/EpisodeCard.astro';
 import Sparks from '../components/Sparks.astro';
 import { getEpisodes } from '../lib/youtube.js';
-import { getEntry } from 'astro:content';
+import { getEntry, getCollection } from 'astro:content';
 
 const episodios = await getEpisodes();
 const destacado = episodios[0] ?? null;
 const recientes = episodios.slice(0, 6);
 const inst = await getEntry('institucion', 'resena');
+const extras = await getCollection('episodios_extra');
+const extraDestacado = destacado ? extras.find((e) => e.data.slug_episodio === destacado.slug) : null;
+const recursoSemana = extraDestacado?.data.recursos?.[0] ?? null;
 const fmt = (d) => new Date(d).toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' });
 const palabras = ['Educación', 'Comunidad', 'Aprendizaje', 'Sentido social', 'Experiencias', 'Reflexión', 'Enseñanza'];
 ---
@@ -69,6 +72,9 @@ const palabras = ['Educación', 'Comunidad', 'Aprendizaje', 'Sentido social', 'E
           <p class="meta">{fmt(destacado.publishedAt)}</p>
           <h3>{destacado.title}</h3>
           <p class="d">{destacado.description.slice(0, 220)}{destacado.description.length > 220 ? '…' : ''}</p>
+          {recursoSemana && (
+            <p class="meta" style="margin-bottom:18px;">Recurso de la semana: <a href={recursoSemana.enlace} style="color:var(--gold-soft);" target="_blank" rel="noopener">{recursoSemana.titulo}</a></p>
+          )}
           <a class="btn btn-gold" href={`/podcast/${destacado.slug}`}>Ver episodio</a>
         </div>
       </div>
