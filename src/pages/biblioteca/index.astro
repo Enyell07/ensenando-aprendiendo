@@ -4,17 +4,21 @@ import { getCollection } from 'astro:content';
 
 const recursos = await getCollection('biblioteca');
 ---
-<BaseLayout title="Biblioteca — Enseñando aprendiendo">
-  <section class="wrap" style="padding:48px 24px;">
-    <h1 style="font-family:'Fraunces',serif; font-size:30px; margin-bottom:28px;">Biblioteca</h1>
-    <div style="display:grid; gap:16px;">
+<BaseLayout title="Biblioteca — Enseñando aprendiendo" description="Recursos educativos para estudiantes y docentes.">
+  <div class="page-head">
+    <p class="kicker">Biblioteca</p>
+    <h1>Recursos educativos</h1>
+    <p>Guías, lecturas, enlaces y actividades relacionadas con los episodios.</p>
+  </div>
+  <div class="page-body">
+    <div class="list">
       {recursos.map((r) => (
-        <div style="border:1px solid var(--border); border-radius:6px; padding:18px 20px;">
-          <span style="font-size:11px; color:var(--gold-deep); border:1px solid var(--gold-deep); border-radius:3px; padding:2px 8px;">{r.data.tipo} · {r.data.publico}</span>
-          <h3 style="font-family:'Fraunces',serif; font-size:18px; margin:10px 0 6px;">{r.data.titulo}</h3>
-          <p style="color:var(--text-secondary); font-size:14.5px;">{r.data.descripcion}</p>
+        <div class="item">
+          <span class="demo-tag" style="margin:0;">{r.data.tipo} · {r.data.publico}</span>
+          <h3>{r.data.titulo}</h3>
+          <p>{r.data.descripcion}</p>
         </div>
       ))}
     </div>
-  </section>
+  </div>
 </BaseLayout>

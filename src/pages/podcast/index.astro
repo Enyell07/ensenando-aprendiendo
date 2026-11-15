@@ -5,11 +5,15 @@ import { getEpisodes } from '../../lib/youtube.js';
 
 const episodios = await getEpisodes();
 ---
-<BaseLayout title="Podcast — Enseñando aprendiendo">
-  <section class="wrap" style="padding:48px 24px;">
-    <h1 style="font-family:'Fraunces',serif; font-size:30px; margin-bottom:28px;">Todos los episodios</h1>
-    <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:24px;">
+<BaseLayout title="Podcast — Enseñando aprendiendo" description="Todos los episodios del podcast Enseñando aprendiendo, con el profe Angel.">
+  <div class="page-head">
+    <p class="kicker">Sala de podcast</p>
+    <h1>Todos los episodios</h1>
+    <p>Mira o escucha cada episodio del podcast.</p>
+  </div>
+  <div class="page-body">
+    <div class="ep-grid" style="max-width:none;">
       {episodios.map((ep) => <EpisodeCard {...ep} />)}
     </div>
-  </section>
+  </div>
 </BaseLayout>

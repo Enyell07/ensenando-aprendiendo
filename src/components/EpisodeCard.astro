@@ -1,13 +1,16 @@
 ---
 // Recibe un episodio ya normalizado (ver src/lib/youtube.js)
-const { slug, title, thumbnail, publishedAt, description } = Astro.props;
+const { slug, title, thumbnail, publishedAt, description = '' } = Astro.props;
 const fecha = new Date(publishedAt).toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' });
 ---
-<a href={`/podcast/${slug}`} style="display:block; text-decoration:none; color:inherit; border:1px solid var(--border); border-radius:6px; overflow:hidden; background:var(--surface-card);">
-  <img src={thumbnail} alt={title} style="width:100%; aspect-ratio:16/9; object-fit:cover; display:block;" />
-  <div style="padding:16px;">
-    <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:6px;">{fecha}</p>
-    <h3 style="font-family:'Fraunces',serif; font-size:17px; font-weight:500; margin-bottom:8px; line-height:1.3;">{title}</h3>
-    <p style="font-size:13.5px; color:var(--text-secondary); line-height:1.5;">{description.slice(0, 110)}...</p>
+<a class="ep-card" href={`/podcast/${slug}`}>
+  <div class="ep-thumb">
+    <img src={thumbnail} alt={`Miniatura del episodio: ${title}`} loading="lazy" />
+    <span class="ep-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg></span>
+  </div>
+  <div class="ep-body">
+    <p class="ep-date">{fecha}</p>
+    <h3>{title}</h3>
+    <p class="ep-desc">{description.slice(0, 110)}{description.length > 110 ? '…' : ''}</p>
   </div>
 </a>

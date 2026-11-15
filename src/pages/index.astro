@@ -1,24 +1,165 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EpisodeCard from '../components/EpisodeCard.astro';
+import Sparks from '../components/Sparks.astro';
 import { getEpisodes } from '../lib/youtube.js';
+import { getEntry } from 'astro:content';
 
 const episodios = await getEpisodes();
-const destacado = episodios[0];
+const destacado = episodios[0] ?? null;
+const recientes = episodios.slice(0, 6);
+const inst = await getEntry('institucion', 'resena');
+const fmt = (d) => new Date(d).toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' });
+const palabras = ['Educación', 'Comunidad', 'Aprendizaje', 'Sentido social', 'Experiencias', 'Reflexión', 'Enseñanza'];
 ---
-<BaseLayout title="Enseñando aprendiendo — Inicio">
-  <header style="background:linear-gradient(180deg,var(--navy),var(--navy-deep)); color:var(--warm-white); padding:72px 24px; text-align:center;">
-    <p style="color:var(--gold); font-size:14px; margin-bottom:14px;">Un podcast de la comunidad educativa</p>
-    <h1 style="font-family:'Fraunces',serif; font-size:clamp(32px,6vw,56px); font-weight:600;">Enseñando aprendiendo</h1>
-    <p style="color:var(--gold); margin-top:10px;">con el profe Angel</p>
-    <p style="margin-top:16px; color:#DDD6C2; max-width:480px; margin-inline:auto;">Aprendemos enseñando con sentido social.</p>
-    <div style="margin-top:28px; display:flex; gap:14px; justify-content:center;">
-      <a href="/podcast" style="background:var(--gold); color:#241C05; padding:13px 24px; border-radius:4px; text-decoration:none; font-weight:600;">Ver episodios</a>
-    </div>
-  </header>
+<BaseLayout title="Enseñando aprendiendo — Podcast educativo con el profe Angel" description="Podcast audiovisual de la comunidad educativa de la Institución Educativa de Occidente, Anserma, Caldas. Aprendemos enseñando con sentido social.">
 
-  <section class="wrap" style="padding:56px 24px;">
-    <h2 style="font-family:'Fraunces',serif; font-size:26px; margin-bottom:24px;">Episodio de la semana</h2>
-    {destacado && <div style="max-width:420px;"><EpisodeCard {...destacado} /></div>}
+  <!-- ENTRADA -->
+  <section class="hero">
+    <Sparks />
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <p class="hero-tag">Podcast audiovisual de la comunidad educativa</p>
+        <h1>Enseñando <span class="script gold-text">aprendiendo</span></h1>
+        <p class="presenta">con el profe Angel</p>
+        <p class="lead">Aprendemos enseñando con sentido social. Conversaciones, experiencias y reflexiones sobre educación, para ver y escuchar cuando quieras.</p>
+        <div class="waves" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="cta-row">
+          <a class="btn btn-gold" href={destacado ? `/podcast/${destacado.slug}` : '/podcast'}>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3a3 3 0 00-3 3v6a3 3 0 006 0V6a3 3 0 00-3-3z"/><path d="M6 11a1 1 0 10-2 0 8 8 0 006.9 7.94V21H9a1 1 0 100 2h6a1 1 0 100-2h-1.9v-2.06A8 8 0 0020 11a1 1 0 10-2 0 6 6 0 01-12 0z"/></svg>
+            Escuchar el podcast
+          </a>
+          <a class="btn btn-ghost" href="#episodios">Ver episodios</a>
+        </div>
+      </div>
+
+      {destacado && (
+        <a class="now-card" href={`/podcast/${destacado.slug}`}>
+          <p class="now-label"><span class="dot"></span> Último episodio</p>
+          <div class="ep-thumb">
+            <img src={destacado.thumbnail} alt={`Miniatura del episodio: ${destacado.title}`} />
+            <span class="ep-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg></span>
+          </div>
+          <h2>{destacado.title}</h2>
+          <p>{fmt(destacado.publishedAt)}</p>
+        </a>
+      )}
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      {[0, 1].map(() => palabras.map((p) => <span>{p} <i>✦</i></span>))}
+    </div>
+  </div>
+
+  <!-- CARTELERA -->
+  {destacado && (
+    <section class="section">
+      <div class="section-head reveal">
+        <p class="kicker">Cartelera escolar</p>
+        <h2>El episodio de la semana</h2>
+      </div>
+      <div class="cartelera-box reveal">
+        <div class="ep-thumb">
+          <img src={destacado.thumbnail} alt={`Miniatura del episodio: ${destacado.title}`} loading="lazy" />
+          <span class="ep-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z"/></svg></span>
+        </div>
+        <div>
+          <p class="meta">{fmt(destacado.publishedAt)}</p>
+          <h3>{destacado.title}</h3>
+          <p class="d">{destacado.description.slice(0, 220)}{destacado.description.length > 220 ? '…' : ''}</p>
+          <a class="btn btn-gold" href={`/podcast/${destacado.slug}`}>Ver episodio</a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- SALA DE PODCAST -->
+  <section class="section" id="episodios" style="padding-top:20px;">
+    <div class="section-head reveal">
+      <p class="kicker">Sala de podcast</p>
+      <h2>Todos los episodios</h2>
+      <p>Cada video de la playlist de YouTube aparece aquí como un nuevo episodio.</p>
+    </div>
+    <div class="ep-grid reveal">
+      {recientes.map((ep) => <EpisodeCard {...ep} />)}
+    </div>
+    <div class="more-row"><a class="btn btn-ghost" href="/podcast">Ver todos los episodios</a></div>
+  </section>
+
+  <!-- INSTITUCIÓN -->
+  <section class="section" id="institucion" style="background:rgba(212,167,44,.04); border-block:1px solid var(--border);">
+    <div class="inst-grid">
+      <div class="inst-text reveal">
+        <p class="kicker">Nuestra institución</p>
+        <h2>Institución Educativa de Occidente</h2>
+        <span class="demo-tag">Contenido demo</span>
+        <p>{inst?.data.resumen}</p>
+        <div class="escudo-stripe" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <div class="mv-grid">
+          <div class="mv"><h3>Misión</h3><p>{inst?.data.mision}</p></div>
+          <div class="mv"><h3>Visión</h3><p>{inst?.data.vision}</p></div>
+        </div>
+      </div>
+      <div class="frame reveal">
+        {inst?.data.foto ? <img src={inst.data.foto} alt="Institución Educativa de Occidente" /> : (
+          <div>Escudo o fachada de la institución<small>Foto pendiente (demo). Se carga desde /admin.</small></div>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <!-- PROFE ANGEL -->
+  <section class="section" id="profe">
+    <div class="profe-grid">
+      <div class="arch reveal"><div>Foto del profe Angel<br /><small style="font-family:'Inter',sans-serif;font-size:13px;color:var(--text-muted);">(demo)</small></div></div>
+      <div class="profe-text reveal">
+        <p class="kicker">Tu anfitrión</p>
+        <h2>Conoce al profe Angel</h2>
+        <span class="demo-tag">Contenido demo</span>
+        <p>Este espacio presentará al anfitrión del podcast: su experiencia, sus intereses educativos y su forma de acompañar a la comunidad. La información real se incorporará cuando el profe la proporcione.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BIBLIOTECA Y AULA -->
+  <section class="section" style="padding-top:20px;">
+    <div class="section-head reveal">
+      <p class="kicker">Recorre el colegio</p>
+      <h2>Sigue aprendiendo</h2>
+    </div>
+    <div class="duo reveal">
+      <a class="tile" href="/biblioteca">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 5.5C6 4.5 9 4.5 12 6c3-1.5 6-1.5 8-.5v13c-2-1-5-1-8 .5-3-1.5-6-1.5-8-.5V5.5z"/></svg></div>
+        <h3>Biblioteca</h3>
+        <p>Guías, lecturas y recursos para estudiantes y docentes, relacionados con cada episodio.</p>
+        <span class="go">Ir a la biblioteca</span>
+      </a>
+      <a class="tile" href="/aula">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="1"/><line x1="7" y1="20" x2="17" y2="20"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="13" y2="13"/></svg></div>
+        <h3>Aula</h3>
+        <p>Reflexiones, experiencias e ideas de innovación educativa de la comunidad.</p>
+        <span class="go">Entrar al aula</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- SECRETARÍA / FORMULARIO -->
+  <section class="section" id="contacto" style="padding-top:20px;">
+    <div class="form-band reveal">
+      <div>
+        <p class="kicker">Secretaría</p>
+        <h2>Propón el próximo tema</h2>
+        <p>¿Qué te gustaría escuchar en un próximo episodio? Cuéntanos tu idea o tu pregunta para el profe Angel.</p>
+      </div>
+      <form name="tema" method="POST" action="/gracias" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="tema" />
+        <p class="hp"><label>No llenar: <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+        <div class="field"><label for="tema-nombre">Tu nombre (opcional)</label><input id="tema-nombre" name="nombre" type="text" autocomplete="name" /></div>
+        <div class="field"><label for="tema-mensaje">Tu tema o pregunta</label><textarea id="tema-mensaje" name="mensaje" required></textarea></div>
+        <button class="btn btn-gold" type="submit">Enviar propuesta</button>
+      </form>
+    </div>
   </section>
 </BaseLayout>

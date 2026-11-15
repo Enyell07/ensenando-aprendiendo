@@ -19,14 +19,9 @@ export async function getEpisodes() {
     // Sin credenciales configuradas: devuelve episodios de ejemplo (demo)
     // para que el sitio se pueda ver y construir aunque YouTube no esté conectado todavía.
     return [
-      {
-        slug: 'episodio-01-demo',
-        title: '¿Cómo aprendemos cuando enseñamos? (demo)',
-        thumbnail: 'https://placehold.co/640x360?text=Episodio+demo',
-        videoId: '',
-        publishedAt: new Date().toISOString(),
-        description: 'Contenido de ejemplo. Conecta tu YOUTUBE_API_KEY y YOUTUBE_PLAYLIST_ID para ver tus episodios reales aquí.'
-      }
+      { slug: 'episodio-03-demo', title: 'La biblioteca como punto de encuentro (demo)', thumbnail: 'https://placehold.co/640x360/15110A/D4A72C?text=Episodio+03+demo', videoId: '', publishedAt: '2026-03-22T12:00:00Z', description: 'Contenido de ejemplo. Conecta tu YOUTUBE_API_KEY y YOUTUBE_PLAYLIST_ID para ver tus episodios reales aquí.' },
+      { slug: 'episodio-02-demo', title: 'Enseñar desde el patio: educación al aire libre (demo)', thumbnail: 'https://placehold.co/640x360/15110A/D4A72C?text=Episodio+02+demo', videoId: '', publishedAt: '2026-03-15T12:00:00Z', description: 'Contenido de ejemplo. Conecta tu YOUTUBE_API_KEY y YOUTUBE_PLAYLIST_ID para ver tus episodios reales aquí.' },
+      { slug: 'episodio-01-demo', title: '¿Cómo aprendemos cuando enseñamos? (demo)', thumbnail: 'https://placehold.co/640x360/15110A/D4A72C?text=Episodio+01+demo', videoId: '', publishedAt: '2026-03-08T12:00:00Z', description: 'Contenido de ejemplo. Conecta tu YOUTUBE_API_KEY y YOUTUBE_PLAYLIST_ID para ver tus episodios reales aquí.' }
     ];
   }
 

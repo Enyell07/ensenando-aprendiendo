@@ -1,0 +1,12 @@
+---
+// Destellos dorados decorativos (solo adorno, ocultos para lectores de pantalla)
+const sparks = Array.from({ length: 22 }, (_, i) => ({
+  x: `${(i * 47 + 8) % 100}%`,
+  s: `${2 + (i % 4)}px`,
+  d: `${7 + (i % 6)}s`,
+  delay: `-${(i * 1.3) % 9}s`
+}));
+---
+<div class="sparks" aria-hidden="true">
+  {sparks.map((p) => <span style={`--x:${p.x}; --s:${p.s}; --d:${p.d}; --delay:${p.delay}`}></span>)}
+</div>

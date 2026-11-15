@@ -4,16 +4,20 @@ import { getCollection } from 'astro:content';
 
 const articulos = (await getCollection('aula')).sort((a, b) => b.data.fecha - a.data.fecha);
 ---
-<BaseLayout title="Aula — Enseñando aprendiendo">
-  <section class="wrap" style="padding:48px 24px;">
-    <h1 style="font-family:'Fraunces',serif; font-size:30px; margin-bottom:28px;">Aula</h1>
-    <div style="display:grid; gap:20px;">
+<BaseLayout title="Aula — Enseñando aprendiendo" description="Reflexiones y experiencias educativas de la comunidad.">
+  <div class="page-head">
+    <p class="kicker">Aula</p>
+    <h1>Reflexiones y experiencias</h1>
+    <p>Artículos sobre educación, enseñanza, aprendizaje e innovación.</p>
+  </div>
+  <div class="page-body">
+    <div class="list">
       {articulos.map((a) => (
-        <div style="border-bottom:1px solid var(--border); padding-bottom:20px;">
-          <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:6px;">{a.data.categoria} · {a.data.autor}</p>
-          <h3 style="font-family:'Fraunces',serif; font-size:19px;">{a.data.titulo}</h3>
+        <div class="item">
+          <p class="ep-date">{a.data.categoria} · {a.data.autor}</p>
+          <h3>{a.data.titulo}</h3>
         </div>
       ))}
     </div>
-  </section>
+  </div>
 </BaseLayout>

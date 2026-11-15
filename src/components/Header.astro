@@ -1,12 +1,30 @@
 ---
 ---
-<nav aria-label="Navegación principal" style="display:flex; align-items:center; justify-content:space-between; padding:20px 24px; border-bottom:1px solid var(--border);">
-  <a href="/" style="font-family:'Fraunces',serif; font-weight:600; font-size:18px; color:var(--text-primary); text-decoration:none;">
-    Enseñando aprendiendo
-  </a>
-  <div style="display:flex; gap:24px; font-size:14.5px;">
-    <a href="/podcast" style="color:var(--text-secondary); text-decoration:none;">Podcast</a>
-    <a href="/biblioteca" style="color:var(--text-secondary); text-decoration:none;">Biblioteca</a>
-    <a href="/aula" style="color:var(--text-secondary); text-decoration:none;">Aula</a>
-  </div>
-</nav>
+<header class="site-header">
+  <nav class="nav" aria-label="Navegación principal">
+    <a href="/" class="brand">
+      <svg viewBox="0 0 40 40" fill="none" aria-hidden="true"><rect x="3" y="3" width="34" height="34" rx="9" fill="#15110A" stroke="#D4A72C" stroke-width="1.5"/><rect x="9" y="13" width="22" height="14" rx="1.5" stroke="#F3D98B" stroke-width="1.8"/><line x1="14" y1="19" x2="14" y2="11" stroke="#D4A72C" stroke-width="2.2"/><line x1="20" y1="20" x2="20" y2="9" stroke="#D4A72C" stroke-width="2.2"/><line x1="26" y1="18" x2="26" y2="12" stroke="#D4A72C" stroke-width="2.2"/></svg>
+      Enseñando aprendiendo
+    </a>
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links">Menú</button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="/podcast">Podcast</a></li>
+      <li><a href="/#institucion">Institución</a></li>
+      <li><a href="/biblioteca">Biblioteca</a></li>
+      <li><a href="/aula">Aula</a></li>
+      <li><a href="/#profe">El profe Angel</a></li>
+      <li><a href="/#contacto">Proponer tema</a></li>
+    </ul>
+  </nav>
+</header>
+<script is:inline>
+  (function () {
+    var b = document.getElementById('nav-toggle'), l = document.getElementById('nav-links');
+    if (!b || !l) return;
+    b.addEventListener('click', function () {
+      var open = l.classList.toggle('open');
+      b.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    l.addEventListener('click', function (e) { if (e.target.tagName === 'A') { l.classList.remove('open'); b.setAttribute('aria-expanded', 'false'); } });
+  })();
+</script>

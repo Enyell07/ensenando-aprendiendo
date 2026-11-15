@@ -21,4 +21,14 @@ const aula = defineCollection({
   })
 });
 
-export const collections = { biblioteca, aula };
+const institucion = defineCollection({
+  type: 'content',
+  schema: z.object({
+    resumen: z.string(),
+    mision: z.string(),
+    vision: z.string(),
+    foto: z.string().optional()
+  })
+});
+
+export const collections = { biblioteca, aula, institucion };

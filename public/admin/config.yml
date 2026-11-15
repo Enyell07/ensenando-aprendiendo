@@ -37,6 +37,19 @@ collections:
       - { label: "Imagen", name: "imagen", widget: "image", required: false }
       - { label: "Contenido", name: "body", widget: "markdown" }
 
+  - name: "institucion"
+    label: "Reseña de la institución"
+    files:
+      - label: "Reseña, misión y visión"
+        name: "resena"
+        file: "src/content/institucion/resena.md"
+        format: "frontmatter"
+        fields:
+          - { label: "Reseña", name: "resumen", widget: "text" }
+          - { label: "Misión", name: "mision", widget: "text" }
+          - { label: "Visión", name: "vision", widget: "text" }
+          - { label: "Foto o escudo", name: "foto", widget: "image", required: false }
+
   - name: "episodios_extra"
     label: "Información extra de episodios"
     folder: "src/content/episodios_extra"
