@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EpisodeCard from '../components/EpisodeCard.astro';
+import { getEpisodes } from '../lib/youtube.js';
+
+const episodios = await getEpisodes();
+const destacado = episodios[0];
+---
+<BaseLayout title="Enseñando aprendiendo — Inicio">
+  <header style="background:linear-gradient(180deg,var(--navy),var(--navy-deep)); color:var(--warm-white); padding:72px 24px; text-align:center;">
+    <p style="color:var(--gold); font-size:14px; margin-bottom:14px;">Un podcast de la comunidad educativa</p>
+    <h1 style="font-family:'Fraunces',serif; font-size:clamp(32px,6vw,56px); font-weight:600;">Enseñando aprendiendo</h1>
+    <p style="color:var(--gold); margin-top:10px;">con el profe Angel</p>
+    <p style="margin-top:16px; color:#DDD6C2; max-width:480px; margin-inline:auto;">Aprendemos enseñando con sentido social.</p>
+    <div style="margin-top:28px; display:flex; gap:14px; justify-content:center;">
+      <a href="/podcast" style="background:var(--gold); color:#241C05; padding:13px 24px; border-radius:4px; text-decoration:none; font-weight:600;">Ver episodios</a>
+    </div>
+  </header>
+
+  <section class="wrap" style="padding:56px 24px;">
+    <h2 style="font-family:'Fraunces',serif; font-size:26px; margin-bottom:24px;">Episodio de la semana</h2>
+    {destacado && <div style="max-width:420px;"><EpisodeCard {...destacado} /></div>}
+  </section>
+</BaseLayout>

@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EpisodeCard from '../../components/EpisodeCard.astro';
+import { getEpisodes } from '../../lib/youtube.js';
+
+const episodios = await getEpisodes();
+---
+<BaseLayout title="Podcast — Enseñando aprendiendo">
+  <section class="wrap" style="padding:48px 24px;">
+    <h1 style="font-family:'Fraunces',serif; font-size:30px; margin-bottom:28px;">Todos los episodios</h1>
+    <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:24px;">
+      {episodios.map((ep) => <EpisodeCard {...ep} />)}
+    </div>
+  </section>
+</BaseLayout>

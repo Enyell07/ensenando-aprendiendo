@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getEpisodes } from '../../lib/youtube.js';
+
+// getStaticPaths le dice a Astro qué páginas de episodio debe generar,
+// una por cada video de la playlist.
+export async function getStaticPaths() {
+  const episodios = await getEpisodes();
+  return episodios.map((ep) => ({
+    params: { slug: ep.slug },
+    props: { episodio: ep }
+  }));
+}
+
+const { episodio } = Astro.props;
+const fecha = new Date(episodio.publishedAt).toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' });
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'PodcastEpisode',
+  name: episodio.title,
+  description: episodio.description,
+  datePublished: episodio.publishedAt,
+  image: episodio.thumbnail,
+  partOfSeries: {
+    '@type': 'PodcastSeries',
+    name: 'Enseñando aprendiendo'
+  }
+};
+---
+<BaseLayout title={`${episodio.title} — Enseñando aprendiendo`} description={episodio.description} jsonLd={jsonLd}>
+  <article class="wrap" style="padding:40px 24px; max-width:800px;">
+    <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;"><a href="/podcast" style="color:var(--gold-deep);">Podcast</a> / {episodio.title}</p>
+    <h1 style="font-family:'Fraunces',serif; font-size:clamp(24px,4vw,34px); margin-bottom:10px;">{episodio.title}</h1>
+    <p style="font-size:13.5px; color:var(--text-muted); margin-bottom:24px;">{fecha}</p>
+
+    {episodio.videoId ? (
+      <div style="aspect-ratio:16/9; margin-bottom:24px;">
+        <iframe
+          style="width:100%; height:100%; border:none; border-radius:6px;"
+          src={`https://www.youtube.com/embed/${episodio.videoId}`}
+          title={episodio.title}
+          allowfullscreen
+        ></iframe>
+      </div>
+    ) : (
+      <div style="aspect-ratio:16/9; background:var(--navy); border-radius:6px; margin-bottom:24px; display:flex; align-items:center; justify-content:center; color:var(--gold);">
+        Video de ejemplo (conecta YouTube para ver el real)
+      </div>
+    )}
+
+    <p style="color:var(--text-secondary); line-height:1.75;">{episodio.description}</p>
+  </article>
+</BaseLayout>

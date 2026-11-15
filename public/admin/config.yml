@@ -1,0 +1,48 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "biblioteca"
+    label: "Biblioteca"
+    folder: "src/content/biblioteca"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Título", name: "titulo", widget: "string" }
+      - label: "Tipo"
+        name: "tipo"
+        widget: "select"
+        options: ["PDF", "Enlace", "Actividad", "Lectura"]
+      - label: "Público"
+        name: "publico"
+        widget: "select"
+        options: ["Estudiantes", "Docentes", "General"]
+      - { label: "Descripción", name: "descripcion", widget: "text" }
+      - { label: "Contenido", name: "body", widget: "markdown" }
+
+  - name: "aula"
+    label: "Aula"
+    folder: "src/content/aula"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Título", name: "titulo", widget: "string" }
+      - { label: "Autor", name: "autor", widget: "string", default: "El profe Angel" }
+      - { label: "Fecha", name: "fecha", widget: "datetime" }
+      - { label: "Categoría", name: "categoria", widget: "string" }
+      - { label: "Imagen", name: "imagen", widget: "image", required: false }
+      - { label: "Contenido", name: "body", widget: "markdown" }
+
+  - name: "episodios_extra"
+    label: "Información extra de episodios"
+    folder: "src/content/episodios_extra"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Slug del episodio (debe coincidir con el título en YouTube)", name: "slug_episodio", widget: "string" }
+      - { label: "Transcripción", name: "transcripcion", widget: "markdown", required: false }
+      - { label: "Recursos relacionados", name: "recursos", widget: "list", required: false }

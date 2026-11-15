@@ -1,0 +1,47 @@
+:root {
+  --gold: #C9A227;
+  --gold-deep: #8A6A17;
+  --gold-soft: #E4C766;
+  --cream: #F5EFE0;
+  --warm-white: #FFFDF7;
+  --navy: #1F2A44;
+  --navy-soft: #2C3A5C;
+  --navy-deep: #141B2C;
+  --text-primary: #242017;
+  --text-secondary: #5C5648;
+  --text-muted: #8B8474;
+  --surface: #FFFDF7;
+  --surface-alt: #F5EFE0;
+  --surface-card: #FFFFFF;
+  --border: #E4DAC0;
+  font-family: 'Inter', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--surface); color: var(--text-primary); }
+.wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+/* Accesibilidad: foco visible para navegación por teclado */
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 3px solid var(--gold-deep);
+  outline-offset: 2px;
+}
+
+/* Enlace "saltar al contenido": oculto hasta que se enfoca con el teclado */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--navy);
+  color: var(--warm-white);
+  padding: 10px 16px;
+  z-index: 100;
+  border-radius: 0 0 4px 0;
+}
+.skip-link:focus {
+  left: 0;
+}

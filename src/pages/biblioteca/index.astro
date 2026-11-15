@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const recursos = await getCollection('biblioteca');
+---
+<BaseLayout title="Biblioteca — Enseñando aprendiendo">
+  <section class="wrap" style="padding:48px 24px;">
+    <h1 style="font-family:'Fraunces',serif; font-size:30px; margin-bottom:28px;">Biblioteca</h1>
+    <div style="display:grid; gap:16px;">
+      {recursos.map((r) => (
+        <div style="border:1px solid var(--border); border-radius:6px; padding:18px 20px;">
+          <span style="font-size:11px; color:var(--gold-deep); border:1px solid var(--gold-deep); border-radius:3px; padding:2px 8px;">{r.data.tipo} · {r.data.publico}</span>
+          <h3 style="font-family:'Fraunces',serif; font-size:18px; margin:10px 0 6px;">{r.data.titulo}</h3>
+          <p style="color:var(--text-secondary); font-size:14.5px;">{r.data.descripcion}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

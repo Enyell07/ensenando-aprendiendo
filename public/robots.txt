@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+
+Sitemap: https://ensenando-aprendiendo.netlify.app/sitemap.xml
